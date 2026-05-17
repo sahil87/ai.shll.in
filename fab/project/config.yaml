@@ -1,3 +1,5 @@
+fab_version: 1.9.5
+
 project:
   name: "ai.shll.in"
   description: "Landing page for the shll AI coding toolkit (Astro + Tailwind + MDX)"
