@@ -1,17 +1,159 @@
 ---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
 
+const tools = (await getCollection('tools')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+
+const loopDiagram = `flowchart TB
+    idea["idea"] --> fab["fab-kit"]
+    fab --> w1["wt + agent #1"]
+    fab --> w2["wt + agent #2"]
+    fab --> w3["wt + agent #3"]
+    w1 --> rk["run-kit"]
+    w2 --> rk
+    w3 --> rk
+    rk --> ship(["ship"])
+
+    classDef tool stroke:#3b82f6,stroke-width:2px;
+    classDef agent stroke:#10b981,stroke-width:2px;
+    classDef ship stroke:#f97316,stroke-width:2px;
+    class idea,fab,rk tool;
+    class w1,w2,w3 agent;
+    class ship ship;`;
+
+const wrapperDiagram = `flowchart TB
+    hop["hop"] -.->|navigate| loop[["the loop above"]]
+    loop -.->|tokens| tu["tu"]
+
+    classDef ambient stroke:#a855f7,stroke-width:2px;
+    classDef loopnode stroke:#3b82f6,stroke-width:2px;
+    class hop,tu ambient;
+    class loop loopnode;`;
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout>
+  <main class="mx-auto max-w-3xl px-6 py-16 sm:py-20">
+    <header class="mb-12">
+      <p class="mb-3 text-sm font-medium tracking-wide text-blue-600 uppercase dark:text-blue-400">
+        Open-source AI coding toolkit
+      </p>
+      <h1 class="text-4xl font-bold tracking-tight sm:text-5xl">
+        A complete AI coding workflow
+      </h1>
+      <p class="mt-4 text-lg text-zinc-600 dark:text-zinc-400">
+        Small Go CLIs that compose into one loop:
+      </p>
+      <pre class="mt-4 inline-block rounded-md bg-zinc-900 px-4 py-2 font-mono text-sm text-zinc-100"><code>spec → parallel agent sessions → ship</code></pre>
+      <p class="mt-6 text-zinc-600 dark:text-zinc-400">
+        No SDK, no vendor lock-in, no opinions you can't override. Built by
+        <a class="text-blue-600 underline-offset-2 hover:underline dark:text-blue-400" href="https://github.com/sahil87">@sahil87</a>,
+        CTO of <a class="text-blue-600 underline-offset-2 hover:underline dark:text-blue-400" href="https://noon.design">Noon</a>.
+        Used daily at Noon.
+      </p>
+    </header>
+
+    <section class="mb-12">
+      <h2 class="mb-3 text-xl font-semibold">Install everything</h2>
+      <pre class="overflow-x-auto rounded-md bg-zinc-900 p-4 font-mono text-sm leading-relaxed text-zinc-100"><code>brew install sahil87/tap/all   <span class="text-zinc-500"># installs every tool in the toolkit</span>
+shll shell-install             <span class="text-zinc-500"># one command to wire shell integration into your rc file</span>
+exec $SHELL                    <span class="text-zinc-500"># reload so the integration takes effect</span></code></pre>
+      <p class="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
+        Later, <code class="rounded bg-zinc-200 px-1 py-0.5 font-mono text-xs dark:bg-zinc-800">shll update</code> upgrades every installed tool in one go.
+        See the <a class="text-blue-600 underline-offset-2 hover:underline dark:text-blue-400" href="https://github.com/sahil87/shll">shll README</a> for the full command surface.
+      </p>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="mb-3 text-xl font-semibold">How the tools fit together</h2>
+      <p class="mb-6 text-zinc-600 dark:text-zinc-400">
+        One idea fans out into many parallel agent sessions — then converges into a single dashboard you can watch from your phone.
+      </p>
+
+      <div class="mermaid overflow-x-auto rounded-md border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900">
+        {loopDiagram}
+      </div>
+
+      <p class="mt-6 text-zinc-700 dark:text-zinc-300">
+        <strong>The loop:</strong>
+        <code class="rounded bg-zinc-200 px-1 py-0.5 font-mono text-xs dark:bg-zinc-800">idea</code> captures it ·
+        <code class="rounded bg-zinc-200 px-1 py-0.5 font-mono text-xs dark:bg-zinc-800">fab-kit</code> turns it into a spec the AI can't fudge ·
+        <code class="rounded bg-zinc-200 px-1 py-0.5 font-mono text-xs dark:bg-zinc-800">wt</code> spins up an isolated worktree per change so N agents work in parallel without conflicts ·
+        <code class="rounded bg-zinc-200 px-1 py-0.5 font-mono text-xs dark:bg-zinc-800">run-kit</code> gives you one browser tab to watch them all (mobile-friendly via Tailscale).
+      </p>
+
+      <details class="mt-6 rounded-md border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900">
+        <summary class="cursor-pointer text-sm font-medium">
+          The full picture — how <code class="font-mono">hop</code> and <code class="font-mono">tu</code> wrap the loop
+        </summary>
+        <div class="mt-4 mermaid overflow-x-auto">
+          {wrapperDiagram}
+        </div>
+        <p class="mt-4 text-zinc-700 dark:text-zinc-300">
+          <strong>Wrapping it:</strong>
+          <code class="rounded bg-zinc-200 px-1 py-0.5 font-mono text-xs dark:bg-zinc-800">hop</code> jumps you into any worktree (or across repos) in one keystroke ·
+          <code class="rounded bg-zinc-200 px-1 py-0.5 font-mono text-xs dark:bg-zinc-800">tu</code> tracks what all those parallel agents are costing you in tokens ·
+          <code class="rounded bg-zinc-200 px-1 py-0.5 font-mono text-xs dark:bg-zinc-800">shll</code> keeps everything installed and updated.
+        </p>
+      </details>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="mb-4 text-xl font-semibold">Tools</h2>
+      <ul class="space-y-3">
+        {tools.map((tool) => (
+          <li class="rounded-md border border-zinc-200 bg-white p-4 transition-colors hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700">
+            <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <a
+                href={tool.data.githubUrl}
+                class="font-mono text-base font-semibold text-blue-600 hover:underline dark:text-blue-400"
+              >
+                {tool.data.name}
+              </a>
+              <code class="rounded bg-zinc-100 px-2 py-0.5 font-mono text-xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+                brew install {tool.data.brewFormula}
+              </code>
+            </div>
+            <p
+              class="mt-1.5 text-sm text-zinc-600 dark:text-zinc-400"
+              set:html={tool.data.oneLiner.replace(/`([^`]+)`/g, '<code class="rounded bg-zinc-200 px-1 py-0.5 font-mono text-xs dark:bg-zinc-800">$1</code>')}
+            />
+          </li>
+        ))}
+      </ul>
+      <p class="mt-4 text-sm text-zinc-600 dark:text-zinc-400">
+        Or pick individual formulas from
+        <a class="text-blue-600 underline-offset-2 hover:underline dark:text-blue-400" href="https://github.com/sahil87/homebrew-tap"><code class="font-mono">sahil87/homebrew-tap</code></a>.
+      </p>
+    </section>
+
+    <section class="mb-8">
+      <h2 class="mb-3 text-xl font-semibold">Community</h2>
+      <p class="text-zinc-600 dark:text-zinc-400">
+        Questions, feature requests, or just want to chat about AI dev tooling?
+        <a class="font-medium text-blue-600 underline-offset-2 hover:underline dark:text-blue-400" href="https://discord.gg/32XHh5mJYn">Join the Discord</a> — that's where I answer queries, share what I'm building, and discuss with people using these tools.
+      </p>
+    </section>
+
+    <footer class="mt-16 border-t border-zinc-200 pt-6 text-sm text-zinc-600 dark:border-zinc-800 dark:text-zinc-400">
+      <p>
+        Find me:
+        <a class="text-blue-600 underline-offset-2 hover:underline dark:text-blue-400" href="https://in.linkedin.com/in/ahujasahil">LinkedIn</a> ·
+        <a class="text-blue-600 underline-offset-2 hover:underline dark:text-blue-400" href="https://x.com/_sahilahuja">X</a> ·
+        <a class="text-blue-600 underline-offset-2 hover:underline dark:text-blue-400" href="https://discord.gg/32XHh5mJYn">Discord</a> ·
+        <a class="text-blue-600 underline-offset-2 hover:underline dark:text-blue-400" href="https://github.com/sahil87">GitHub</a>
+      </p>
+    </footer>
+  </main>
+
+  <script>
+    import mermaid from 'mermaid';
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: prefersDark ? 'dark' : 'default',
+      securityLevel: 'loose',
+    });
+  </script>
+</Layout>

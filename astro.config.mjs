@@ -6,6 +6,8 @@ import mdx from '@astrojs/mdx';
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://ai.shll.in',
+
   vite: {
     plugins: [tailwindcss()]
   },
