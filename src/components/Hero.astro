@@ -1,0 +1,61 @@
+---
+/**
+ * Custom Hero override for Starlight.
+ * Registered via `components: { Hero: './src/components/Hero.astro' }` in astro.config.mjs.
+ *
+ * Replaces Starlight's default Hero so the home page can render a terminal-styled
+ * hero — shellpath line, blinking cursor on H1, prompt-prefixed CTAs — while still
+ * producing a single canonical <h1 id="_top"> for accessibility and deep links.
+ *
+ * Constitution III: styling is Tailwind utilities only; no class-based CSS rules.
+ */
+/* PAGE_TITLE_ID is the canonical anchor Starlight uses for the page H1. */
+const PAGE_TITLE_ID = '_top';
+
+const { data } = Astro.locals.starlightRoute.entry;
+const { title = data.title, tagline, actions = [] } = data.hero || {};
+---
+
+<div class="not-content mx-auto max-w-3xl px-4 pt-6 pb-2 text-fg">
+  <p class="mb-4 text-sm font-mono">
+    <span class="text-accent-2">~/ai.shll.in</span>{' '}
+    <span class="text-accent-2 font-semibold">$</span>{' '}
+    <span class="text-fg-dim">cat README.md</span>
+  </p>
+
+  <h1
+    id={PAGE_TITLE_ID}
+    data-page-title
+    class="text-3xl font-semibold leading-tight tracking-tight mb-3 font-mono"
+  >
+    <Fragment set:html={title} /><span
+      class="inline-block ml-1 align-text-bottom bg-accent animate-blink motion-reduce:animate-none w-[0.6em] h-[1.1em]"
+      aria-hidden="true"
+    ></span>
+  </h1>
+
+  {tagline && (
+    <div class="mb-6 text-base text-fg-dim font-mono" set:html={tagline} />
+  )}
+
+  {actions.length > 0 && (
+    <div class="flex flex-col sm:flex-row gap-3 font-mono">
+      {actions.map(({ link, text, variant }) => (
+        <p class="flex items-center gap-2 m-0">
+          <span class="text-accent-2 font-semibold">$</span>
+          <a
+            href={link}
+            class:list={[
+              'inline-block px-4 py-2 no-underline',
+              variant === 'primary'
+                ? 'border border-accent bg-accent/10 text-accent font-semibold hover:bg-accent/20'
+                : 'border border-border text-fg hover:bg-surface',
+            ]}
+          >
+            <Fragment set:html={text} />
+          </a>
+        </p>
+      ))}
+    </div>
+  )}
+</div>

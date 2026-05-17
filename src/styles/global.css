@@ -1,1 +1,81 @@
+/* JetBrains Mono — self-hosted via @fontsource (Constitution IV: justified single dep). */
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
+@import "@fontsource/jetbrains-mono/600.css";
+@import "@fontsource/jetbrains-mono/700.css";
+
 @import "tailwindcss";
+
+/* Tailwind v4 theme tokens. `inline` keeps utilities resolving to var() refs,
+   so the :root / :root[data-theme="dark"] overrides below drive the swap. */
+@theme inline {
+  --font-mono: "JetBrains Mono", "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --color-bg: var(--c-bg);
+  --color-surface: var(--c-surface);
+  --color-surface-2: var(--c-surface-2);
+  --color-border: var(--c-border);
+  --color-fg: var(--c-fg);
+  --color-fg-dim: var(--c-fg-dim);
+  --color-fg-faint: var(--c-fg-faint);
+  --color-accent: var(--c-accent);
+  --color-accent-2: var(--c-accent-2);
+  --color-accent-3: var(--c-accent-3);
+  --animate-blink: blink 1.1s steps(2, start) infinite;
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+}
+
+/* Light theme (paper terminal) — default at :root. */
+:root {
+  --c-bg: #f5f1e8;
+  --c-surface: #ede7d6;
+  --c-surface-2: #e4dcc4;
+  --c-border: #c9bfa5;
+  --c-fg: #2a2620;
+  --c-fg-dim: #6b6256;
+  --c-fg-faint: #a39a87;
+  --c-accent: #a8761a;
+  --c-accent-2: #5a7a2e;
+  --c-accent-3: #2e6868;
+
+  /* Starlight integration variables — light. */
+  --sl-font: "JetBrains Mono", "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --sl-font-mono: "JetBrains Mono", "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --sl-color-bg: var(--c-bg);
+  --sl-color-bg-sidebar: var(--c-bg);
+  --sl-color-bg-nav: var(--c-bg);
+  --sl-color-text: var(--c-fg);
+  --sl-color-text-accent: var(--c-accent);
+  --sl-color-accent: var(--c-accent);
+  --sl-color-accent-low: var(--c-accent-2);
+  --sl-color-accent-high: var(--c-accent);
+  --sl-color-hairline: var(--c-border);
+  --sl-color-hairline-light: var(--c-border);
+}
+
+/* Dark theme (primary) — Starlight sets data-theme="dark" on <html>. */
+:root[data-theme="dark"] {
+  --c-bg: #0b0d10;
+  --c-surface: #12161b;
+  --c-surface-2: #1a1f26;
+  --c-border: #232932;
+  --c-fg: #d8dce4;
+  --c-fg-dim: #7c8593;
+  --c-fg-faint: #4a525e;
+  --c-accent: #d4a73a;
+  --c-accent-2: #7cb342;
+  --c-accent-3: #5eb3b3;
+
+  /* Starlight integration variables — dark. */
+  --sl-color-bg: var(--c-bg);
+  --sl-color-bg-sidebar: var(--c-bg);
+  --sl-color-bg-nav: var(--c-bg);
+  --sl-color-text: var(--c-fg);
+  --sl-color-text-accent: var(--c-accent);
+  --sl-color-accent: var(--c-accent);
+  --sl-color-accent-low: var(--c-accent-2);
+  --sl-color-accent-high: var(--c-accent);
+  --sl-color-hairline: var(--c-border);
+  --sl-color-hairline-light: var(--c-border);
+}
