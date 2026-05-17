@@ -1,61 +1,59 @@
 ---
-/**
- * Custom Hero override for Starlight.
- * Registered via `components: { Hero: './src/components/Hero.astro' }` in astro.config.mjs.
- *
- * Replaces Starlight's default Hero so the home page can render a terminal-styled
- * hero — shellpath line, blinking cursor on H1, prompt-prefixed CTAs — while still
- * producing a single canonical <h1 id="_top"> for accessibility and deep links.
- *
- * Constitution III: styling is Tailwind utilities only; no class-based CSS rules.
- */
-/* PAGE_TITLE_ID is the canonical anchor Starlight uses for the page H1. */
-const PAGE_TITLE_ID = '_top';
+interface Action {
+  text: string;
+  link: string;
+  variant?: 'primary' | 'secondary';
+  comment?: string;
+}
 
-const { data } = Astro.locals.starlightRoute.entry;
-const { title = data.title, tagline, actions = [] } = data.hero || {};
+interface Props {
+  title: string;
+  tagline?: string;
+  actions?: Action[];
+}
+
+const { title, tagline, actions = [] } = Astro.props;
 ---
 
-<div class="not-content mx-auto max-w-3xl px-4 pt-10 pb-4 text-fg">
-  <p class="mb-6 text-sm font-mono">
-    <span class="text-accent-2">~/ai.shll.in</span>{' '}
-    <span class="text-accent-2 font-semibold">$</span>{' '}
-    <span class="text-fg-dim">cat README.md</span>
+<section class="pb-8 mb-8 border-b border-dashed border-border">
+  <p class="mb-4 text-xs font-mono text-fg-faint">
+    <span class="text-accent-2 font-semibold">~/ai.shll.in</span>{' '}
+    <span class="text-fg-dim">$ cat README.md</span>
   </p>
 
   <h1
-    id={PAGE_TITLE_ID}
-    data-page-title
-    class="text-4xl sm:text-5xl font-semibold leading-tight tracking-tight mb-5 font-mono"
+    id="_top"
+    class="text-3xl sm:text-4xl font-semibold leading-tight tracking-tight mb-4"
   >
     <Fragment set:html={title} /><span
-      class="inline-block ml-1 align-text-bottom bg-accent animate-blink motion-reduce:animate-none w-[0.55em] h-[0.9em]"
+      class="inline-block ml-1 align-baseline translate-y-[0.15em] bg-accent animate-blink motion-reduce:animate-none w-[0.55em] h-[1em]"
       aria-hidden="true"
     ></span>
   </h1>
 
   {tagline && (
-    <div class="mb-8 text-base sm:text-lg text-fg-dim font-mono leading-relaxed" set:html={tagline} />
+    <div class="mb-7 max-w-[40rem] text-sm text-fg-dim leading-relaxed [&_a]:text-accent-3 [&_a]:underline [&_a]:underline-offset-2" set:html={tagline} />
   )}
 
   {actions.length > 0 && (
-    <div class="flex flex-col gap-3 font-mono">
-      {actions.map(({ link, text, variant }) => (
-        <p class="flex items-center gap-3 m-0">
+    <div class="flex flex-col gap-2">
+      {actions.map(({ link, text, variant, comment }) => (
+        <p class="flex items-center gap-3 m-0 text-sm">
           <span class="text-accent-2 font-semibold shrink-0">$</span>
           <a
             href={link}
             class:list={[
-              'inline-block px-4 py-2 no-underline',
+              'inline-block px-3.5 py-1.5 no-underline border rounded-sm text-[13px]',
               variant === 'primary'
-                ? 'border border-accent bg-accent/10 text-accent font-semibold hover:bg-accent/20'
-                : 'border border-border text-fg hover:bg-surface',
+                ? 'bg-accent border-accent text-bg font-semibold hover:brightness-110'
+                : 'border-border bg-surface text-fg hover:bg-surface-2',
             ]}
           >
             {text}
           </a>
+          {comment && <span class="text-fg-faint text-xs">{comment}</span>}
         </p>
       ))}
     </div>
   )}
-</div>
+</section>

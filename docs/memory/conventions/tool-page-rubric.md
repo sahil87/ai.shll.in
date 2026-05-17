@@ -2,7 +2,7 @@
 
 ## Overview
 
-Every tool documented at `src/content/docs/tools/{name}.md` follows the same shape. The rubric is short on purpose — these pages are "directory entries" pointing to each tool's full README on GitHub, not full docs.
+Every tool documented at `src/content/tools/{name}.md` follows the same shape. The rubric is short on purpose — these pages are "directory entries" pointing to each tool's full README on GitHub, not full docs.
 
 This pattern is observable across all seven tool pages (`idea.md`, `hop.md`, `fab-kit.md`, `wt.md`, `run-kit.md`, `tu.md`, `shll.md`) and is the expected shape for any new tool added to the toolkit.
 
@@ -10,7 +10,7 @@ This pattern is observable across all seven tool pages (`idea.md`, `hop.md`, `fa
 
 Every tool page MUST contain the following sections, in order:
 
-1. **Frontmatter** — `title` (the tool name) and `description` (one sentence, ≤140 chars, the elevator pitch). SHALL be valid Starlight `docsSchema()` frontmatter.
+1. **Frontmatter** — `title` (the tool name) and `description` (one sentence, ≤140 chars, the elevator pitch). MUST satisfy the `tools` collection schema in `src/content.config.ts` (zod: `{ title: string, description: string }`).
 2. **Opening paragraph** — One short paragraph (1-2 sentences) describing what the tool is. SHALL NOT exceed two sentences.
 3. **`## Install`** — A `bash` code block with the `brew install sahil87/tap/{tool}` line and any required shell-init eval (e.g., `eval "$(tool shell-init zsh)"`).
 4. **`## At a glance`** — A `bash` code block with 4-6 representative commands and inline `# comment` annotations. Followed by a bulleted list of distinguishing properties (3-6 bullets).
@@ -35,7 +35,7 @@ Rationale: scannable on mobile, parallel structure across the toolkit, easy to e
 
 ## Sidebar Coupling
 
-Every new tool page MUST also have a corresponding sidebar entry in `astro.config.mjs` under the "Tools" group. See [astro-config](../site/astro-config.md). Adding a page without a sidebar entry leaves the page unreachable from navigation (only via direct URL).
+Every new tool page MUST also have a corresponding entry in `src/data/tools.ts` (`{ slug, label, blurb }`). See [astro-config](../site/astro-config.md). Adding a page without an entry leaves the page unreachable from the sidebar AND missing from the home-page tree-list (both read from `tools.ts`).
 
 ## Design Decisions
 
@@ -48,3 +48,4 @@ Every new tool page MUST also have a corresponding sidebar entry in `astro.confi
 | Date | Change |
 |------|--------|
 | 2026-05-17 | Generated from code analysis |
+| 2026-05-17 | Starlight removal (branch `starlight-removal`): tool pages moved from `src/content/docs/tools/` to `src/content/tools/`. Frontmatter now validates against the `tools` zod schema in `src/content.config.ts` (was `docsSchema()`). Sidebar coupling now via `src/data/tools.ts` instead of `astro.config.mjs`. |

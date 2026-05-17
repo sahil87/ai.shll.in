@@ -21,9 +21,10 @@ const { light, dark, alt = '' } = Astro.props as { light: string; dark: string; 
 </style>
 
 <script>
-  // Swap between pre-rendered light/dark SVGs based on Starlight's theme.
-  // Starlight sets `data-theme="light" | "dark" | "auto"` on <html>;
-  // when "auto", fall back to the OS preference.
+  // Swap between pre-rendered light/dark SVGs based on the current theme.
+  // BaseLayout's inline init script and ThemeToggle both set
+  // `data-theme="light" | "dark"` on <html>. We also handle the historical
+  // "auto" value by falling back to the OS preference.
   const apply = () => {
     const theme = document.documentElement.dataset.theme ?? 'auto';
     const wantDark =

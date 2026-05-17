@@ -5,6 +5,6 @@
 
 | Domain | Description | Memory Files |
 |--------|-------------|------|
-| [site](./site/index.md) | Astro + Starlight architecture, styling, config | site-architecture, styling, astro-config, diagrams |
+| [site](./site/index.md) | Pure Astro + Tailwind architecture, styling, config | site-architecture, styling, astro-config, diagrams |
 | [build-deploy](./build-deploy/index.md) | How the site is built and deployed | deployment |
 | [conventions](./conventions/index.md) | Recurring shapes that span multiple files | tool-page-rubric |

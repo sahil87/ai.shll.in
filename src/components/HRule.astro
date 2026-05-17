@@ -1,15 +1,6 @@
 ---
-/**
- * ASCII horizontal rule — a single line of box-drawing dashes in the faint
- * foreground color. Replaces native <hr> for visual section breaks while
- * staying in the terminal aesthetic.
- *
- * Constitution III: styling is Tailwind utilities only; this component exists
- * to dedupe the utility chain + 120-character dash literal across the home page.
- */
+/* ASCII horizontal rule — dashes rendered via the .ascii-rule CSS rule
+   in global.css, so the markup stays a single empty element. */
 ---
 
-<div
-  class="text-fg-faint overflow-hidden whitespace-nowrap select-none my-6"
-  aria-hidden="true"
->────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</div>
+<div class="ascii-rule" aria-hidden="true"></div>
