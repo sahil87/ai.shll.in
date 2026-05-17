@@ -41,4 +41,4 @@ New contributions should read the constitution before adding dependencies or new
 
 ## License
 
-See [LICENSE](./LICENSE) (if present) or the repo root.
+MIT — see [LICENSE](./LICENSE).
