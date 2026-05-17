@@ -1,4 +1,4 @@
-/* JetBrains Mono — self-hosted via @fontsource (Constitution IV: justified single dep). */
+/* JetBrains Mono — self-hosted via @fontsource. */
 @import "@fontsource/jetbrains-mono/400.css";
 @import "@fontsource/jetbrains-mono/500.css";
 @import "@fontsource/jetbrains-mono/600.css";
@@ -39,30 +39,10 @@
   --c-accent-2: #5a7a2e;
   --c-accent-3: #2e6868;
 
-  /* Starlight integration variables — light. */
-  --sl-font: "JetBrains Mono", "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
-  --sl-font-mono: "JetBrains Mono", "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
-  --sl-color-bg: var(--c-bg);
-  --sl-color-bg-sidebar: var(--c-bg);
-  --sl-color-bg-nav: var(--c-bg);
-  --sl-color-text: var(--c-fg);
-  --sl-color-text-accent: var(--c-accent);
-  --sl-color-text-invert: var(--c-bg);
-  --sl-color-accent: var(--c-accent);
-  --sl-color-accent-low: var(--c-surface-2);
-  --sl-color-accent-high: var(--c-accent);
-  --sl-color-hairline: var(--c-border);
-  --sl-color-hairline-light: var(--c-border);
-  --sl-color-hairline-shade: var(--c-fg-faint);
-
-  /* Heading scale — terminal-skin: H1 dominates (set via Hero.astro on home),
-     section H2 reads as a section anchor (~24px), not a competing hero. */
-  --sl-text-h1: 2.25rem;   /* 36px — used on tool subpages */
-  --sl-text-h2: 1.5rem;    /* 24px */
-  --sl-text-h3: 1.125rem;  /* 18px */
+  color-scheme: light;
 }
 
-/* Dark theme (primary) — Starlight sets data-theme="dark" on <html>. */
+/* Dark theme (primary) — set on <html data-theme="dark"> by the inline init script. */
 :root[data-theme="dark"] {
   --c-bg: #0b0d10;
   --c-surface: #12161b;
@@ -75,17 +55,42 @@
   --c-accent-2: #7cb342;
   --c-accent-3: #5eb3b3;
 
-  /* Starlight integration variables — dark. */
-  --sl-color-bg: var(--c-bg);
-  --sl-color-bg-sidebar: var(--c-bg);
-  --sl-color-bg-nav: var(--c-bg);
-  --sl-color-text: var(--c-fg);
-  --sl-color-text-accent: var(--c-accent);
-  --sl-color-text-invert: var(--c-bg);
-  --sl-color-accent: var(--c-accent);
-  --sl-color-accent-low: var(--c-surface-2);
-  --sl-color-accent-high: var(--c-accent);
-  --sl-color-hairline: var(--c-border);
-  --sl-color-hairline-light: var(--c-border);
-  --sl-color-hairline-shade: var(--c-fg-faint);
+  color-scheme: dark;
+}
+
+/* Base — apply the palette + mono font to the page itself. */
+html {
+  background: var(--c-bg);
+  color: var(--c-fg);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+body { margin: 0; }
+
+/* `## ` sage prefix on every H2 in <main> — matches the mockup's
+   shell-comment heading style without per-element utility repetition. */
+main h2::before {
+  content: "## ";
+  color: var(--c-accent-2);
+  font-weight: 500;
+}
+
+/* `# ` faint prefix on sidebar / TOC group labels (.shell-group-label). */
+.shell-group-label::before {
+  content: "# ";
+  color: var(--c-fg-faint);
+}
+
+/* ASCII rule — render the dashes via ::before so markup stays a single empty div. */
+.ascii-rule {
+  color: var(--c-fg-faint);
+  overflow: hidden;
+  white-space: nowrap;
+  user-select: none;
+  margin: 1.5rem 0;
+}
+.ascii-rule::before {
+  content: "────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────";
 }

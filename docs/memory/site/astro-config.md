@@ -2,59 +2,51 @@
 
 ## Overview
 
-`astro.config.mjs` is the single configuration file for the entire site. It wires the site URL, the Tailwind Vite plugin, and the Starlight integration (which configures title, description, social links, sidebar, custom CSS, and the `Hero` component override that owns the home-page hero region).
+`astro.config.mjs` is the single configuration file for the entire site. After the Starlight removal it is six lines of code: site URL plus the Tailwind v4 Vite plugin. No integrations array, no sidebar config, no component overrides, no `customCss` wiring.
 
-There is no `tailwind.config.js`, no separate sidebar/navigation config, no env-driven configuration. Everything is in one file.
+Sidebar order and tool list now live in `src/data/tools.ts`; metadata that used to be set through Starlight's integration options (title, description, social links, OG image, favicon) is now emitted directly by `BaseLayout.astro`.
 
 ## Requirements
 
 - `site` MUST be set to `https://ai.shll.in` (the production URL with custom domain). Rationale: Astro uses this for absolute URLs in `<link rel="canonical">` and sitemap generation.
 - The Tailwind v4 Vite plugin MUST be registered via `vite.plugins: [tailwindcss()]`. See [styling](./styling.md).
-- Starlight MUST be the only Astro integration. Additional integrations SHALL be justified against [Constitution Principle IV](../../../fab/project/constitution.md) (minimal dependencies) before adding.
-- The Starlight sidebar MUST be configured statically (manually listed entries), not auto-generated from the file tree. Adding or removing a tool requires updating the sidebar block alongside the content file.
-- Social links MUST be configured via Starlight's `social` array (GitHub, Discord, X). Pages SHALL NOT hardcode duplicate social link blocks.
-- `customCss` MUST include `./src/styles/global.css` so Tailwind utilities are available on every page.
-- Starlight's `components` key MUST register `Hero: './src/components/Hero.astro'` so the home page's `splash` template uses the custom hero override (shellpath + canonical `<h1 id="_top">` with blinking cursor + `$`-prefixed CTAs) instead of Starlight's default hero template. See [site-architecture](./site-architecture.md).
+- No Astro integrations SHALL be added unless justified against [Constitution Principle IV](../../../fab/project/constitution.md) (minimal dependencies). The site builds with zero integrations.
+- Per-page `<head>` metadata (title, description, OG, twitter, canonical, favicon) MUST be emitted by `src/layouts/BaseLayout.astro` from `title` + `description` props. Astro pages SHALL NOT hardcode their own `<head>` blocks.
 
 ## Design Decisions
 
-- **Single config file.** No split between `astro.config.mjs` / `tailwind.config.js` / `starlight.config.ts`. Rationale: small surface area, easier to read at a glance, no risk of config files drifting out of sync.
-- **Static sidebar over auto-generation.** Manually-curated entries give exact control over labels and order. Auto-generation from the file tree would tie the sidebar order to filesystem sort order (alphabetical), which doesn't match the loop's narrative order (idea → fab-kit → wt → run-kit, then hop/tu/shll).
-- **Sidebar order matches the toolkit's loop, not alphabetical.** First entry is "All tools" (the `/tools/` index), then individual tools roughly in execution order. [INFERRED] — verified against the loop diagram in `src/content/docs/index.mdx`.
-- **`@astrojs/mdx` registered as a peer.** Required for the `.mdx` home page. Declared in `package.json` dependencies but not explicitly listed in `integrations:` — Starlight integrates MDX support automatically. [INFERRED]
-- **`components: { Hero: ... }` override, not a hand-rolled splash template.** Starlight exposes a documented `components` map keyed by Starlight's component names — registering a path for `Hero` swaps the default hero implementation when the page frontmatter contains a `hero:` block. The override receives `Astro.locals.starlightRoute.entry.data.hero` (title, tagline, actions) and renders whatever markup it wants. Rationale: this is the framework's intended extension point — no need to fork the `splash` template, no need to drop to a custom `.astro` page, and no risk of duplicate `<h1>` injection. Rejected: building a parallel hero block inline in MDX (Starlight's `splash` template still auto-injects its own `<h1 id="_top">` from `title:`, producing two competing H1s) or forking the entire splash template (high maintenance burden on Starlight upgrades).
+- **No Starlight integration.** Previously the site used `@astrojs/starlight` for chrome (sidebar, TOC, theme toggle, search). After visual review the chrome was rebuilt as hand-rolled Astro components. The integration was dropped wholesale rather than kept and overridden — overriding Starlight components and `--sl-*` variables had become higher friction than building the equivalent from scratch, for an 8-page marketing site that doesn't benefit much from Starlight's affordances (search was unused, sidebar was custom, theme toggle was custom).
+- **No MDX integration.** The home page was previously `.mdx` to embed components inline. After the rebuild it's `.astro` and imports components directly. `@astrojs/mdx` was dropped — one less dependency, one less moving part, no JSX-in-markdown ambiguity.
+- **Single config file.** No `tailwind.config.js`, no `starlight.config.ts`. Tailwind v4 reads its theme tokens from the `@theme` block in `src/styles/global.css`. Site metadata lives in `BaseLayout.astro`. Sidebar entries live in `src/data/tools.ts`. There is no config in `astro.config.mjs` beyond the site URL and the Tailwind plugin.
+- **`BaseLayout` owns `<head>`.** Title format (`{page} · ai.shll.in`), canonical URL, OG image + dimensions, twitter card, favicon links — all centralized in `BaseLayout`. Adding a page is one Astro file that calls `<BaseLayout title="..." description="...">`; no head boilerplate to repeat. Rejected: moving these into Astro's per-page `<head>` slot — would re-fragment the metadata across every page.
 
-## Sidebar Structure
+## Tool list & sidebar source of truth
 
-```
-Start here
-  └─ Overview              → /
-Tools
-  ├─ All tools             → /tools/
-  ├─ idea                  → /tools/idea/
-  ├─ hop                   → /tools/hop/
-  ├─ fab-kit               → /tools/fab-kit/
-  ├─ wt                    → /tools/wt/
-  ├─ run-kit               → /tools/run-kit/
-  ├─ tu                    → /tools/tu/
-  └─ shll                  → /tools/shll/
-```
+The sidebar's order and labels live in `src/data/tools.ts`, not in `astro.config.mjs`. `Sidebar.astro` imports the array and renders it. Adding a tool is:
 
-Update both the sidebar block AND the `src/content/docs/tools/` directory in the same change.
+1. Add an entry to `src/data/tools.ts` (`{ slug, label, blurb }`)
+2. Add the matching `src/content/tools/{slug}.md` (frontmatter: `title`, `description`)
+3. Done — sidebar and home-page tree-list both pick it up
 
-## Component Overrides
+The home-page tree-list reads the same `tools` array, so adding a tool also adds a row to the home page automatically.
 
-Starlight allows replacing built-in UI components by passing a `components` map to the integration. Currently registered:
+## Per-page metadata
 
-| Starlight component | Replaced by | Purpose |
-|---------------------|-------------|---------|
-| `Hero` | `src/components/Hero.astro` | Render the home-page hero with shellpath line above the H1, blinking cursor inside the H1, and `$`-prefixed CTA buttons, while emitting the single canonical `<h1 id="_top" data-page-title>` Starlight expects. |
+Pages pass `title` and `description` props to their layout. `BaseLayout` does the rest:
 
-Adding a new override means: (1) authoring an `.astro` component that satisfies the contract of the Starlight component being replaced (see Starlight's source for the props/slots it provides), (2) listing it under `components:` here, and (3) documenting it in this table and in [site-architecture](./site-architecture.md).
+- `<title>{title} · ai.shll.in</title>`
+- `<meta name="description">`
+- `<link rel="canonical">` resolved against `Astro.site`
+- `<link rel="icon" type="image/svg+xml" href="/favicon.svg">` + ICO fallback
+- OG: `og:type=website`, `og:title`, `og:description`, `og:url`, `og:image` (512×512)
+- Twitter: `twitter:card=summary`, `twitter:image`
+
+If a future page needs additional `<head>` content, add it to `BaseLayout` (if it should appear on every page) or pass a `<slot name="head">` (not currently set up, but trivial to add).
 
 ## Changelog
 
 | Date | Change |
 |------|--------|
 | 2026-05-17 | Generated from code analysis |
-| 2026-05-17 | Terminal skin (change `260517-pdsp-terminal-skin`): added `components: { Hero: './src/components/Hero.astro' }` to the Starlight integration. Documented the rationale (single canonical `<h1>` + Starlight's documented extension point) and added a Component Overrides section listing currently-registered overrides. |
+| 2026-05-17 | Terminal skin (change `260517-pdsp-terminal-skin`): added `components: { Hero: '...' }` Starlight override. |
+| 2026-05-17 | Starlight removal (branch `starlight-removal`): `astro.config.mjs` reduced to 6 lines — dropped the entire Starlight integration block (sidebar, social, customCss, components override, head metadata). Sidebar moved to `src/data/tools.ts`; head metadata moved to `BaseLayout.astro`. `@astrojs/starlight` and `@astrojs/mdx` removed from `package.json`. |
