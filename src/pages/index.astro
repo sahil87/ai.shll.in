@@ -55,12 +55,10 @@ const tagline =
 
     <h2 id="install">Install</h2>
     <div class="relative bg-surface-2 border border-border rounded-sm my-4 font-mono text-[13px] leading-[1.7]">
-      <span class="absolute -top-px -right-px text-[10px] tracking-wider px-2.5 py-0.5 bg-bg text-fg-faint border border-border rounded-tr-sm rounded-bl-sm">bash</span>
-      <div class="px-5 py-4">
-        <div><span class="text-accent-2 font-semibold">$</span> <span class="text-fg">brew install sahil87/tap/all</span>   <span class="text-fg-faint"># installs every tool in the toolkit</span></div>
-        <div><span class="text-accent-2 font-semibold">$</span> <span class="text-fg">shll shell-install</span>             <span class="text-fg-faint"># wire shell integration into your rc file</span></div>
-        <div><span class="text-accent-2 font-semibold">$</span> <span class="text-fg">exec $SHELL</span>                    <span class="text-fg-faint"># reload so the integration takes effect</span></div>
-      </div>
+      <span class="absolute -top-px -right-px text-[10px] tracking-wider px-2.5 py-0.5 bg-bg text-fg-faint border border-border rounded-tr-sm rounded-bl-sm select-none">bash</span>
+      <pre class="px-5 py-4 m-0 overflow-x-auto"><code><span class="text-accent-2 font-semibold select-none">$ </span><span class="text-fg">brew install sahil87/tap/all</span>   <span class="text-fg-faint select-none"># installs every tool in the toolkit</span>
+<span class="text-accent-2 font-semibold select-none">$ </span><span class="text-fg">shll shell-install</span>             <span class="text-fg-faint select-none"># wire shell integration into your rc file</span>
+<span class="text-accent-2 font-semibold select-none">$ </span><span class="text-fg">exec $SHELL</span>                    <span class="text-fg-faint select-none"># reload so the integration takes effect</span></code></pre>
     </div>
     <p class="text-fg">
       Later, <code class="px-1.5 py-px rounded-sm bg-surface-2 border border-fg-faint/20 text-accent text-[0.92em]">shll update</code> upgrades every installed tool in one go. See the <a class="text-accent-3 underline underline-offset-2" href="https://github.com/sahil87/shll">shll README</a> for the full command surface.
