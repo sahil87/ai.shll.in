@@ -1,0 +1,20 @@
+flowchart TB
+    hop["hop"] -.->|navigate| fab
+    idea["idea"] --> fab["fab-kit"]
+    fab --> w1["wt + agent #1"]
+    fab --> w2["wt + agent #2"]
+    fab --> w3["wt + agent #3"]
+    w1 --> rk["run-kit"]
+    w2 --> rk
+    w3 --> rk
+    rk --> ship(["ship"])
+    rk -.->|tokens| tu["tu"]
+
+    classDef tool stroke:#3b82f6,stroke-width:2px;
+    classDef agent stroke:#10b981,stroke-width:2px;
+    classDef ship stroke:#f97316,stroke-width:2px;
+    classDef ambient stroke:#a855f7,stroke-width:2px;
+    class idea,fab,rk tool;
+    class w1,w2,w3 agent;
+    class ship ship;
+    class hop,tu ambient;
