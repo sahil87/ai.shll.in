@@ -1,14 +1,17 @@
+%% Some labels include a trailing &nbsp; so the browser-rendered text fits
+%% inside the rect that mermaid pre-measures in headless Chrome. Without it,
+%% the "t" in fab-kit/run-kit and the "u" in tu get clipped on the right edge.
 flowchart TB
     hop["hop"] -.->|navigate| fab
-    idea["idea"] --> fab["fab-kit"]
+    idea["idea"] --> fab["fab-kit&nbsp;"]
     fab --> w1["wt + agent #1"]
     fab --> w2["wt + agent #2"]
     fab --> w3["wt + agent #3"]
-    w1 --> rk["run-kit"]
+    w1 --> rk["run-kit&nbsp;"]
     w2 --> rk
     w3 --> rk
     rk --> ship(["ship"])
-    rk -.->|tokens| tu["tu"]
+    rk -.->|tokens| tu["tu&nbsp;"]
 
     classDef tool stroke:#3b82f6,stroke-width:2px;
     classDef agent stroke:#10b981,stroke-width:2px;
