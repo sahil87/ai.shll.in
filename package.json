@@ -16,7 +16,6 @@
     "@astrojs/starlight": "^0.39.2",
     "@tailwindcss/vite": "^4.3.0",
     "astro": "^6.3.3",
-    "mermaid": "^11.15.0",
     "tailwindcss": "^4.3.0"
   }
 }

@@ -1,43 +1,44 @@
-# Astro Starter Kit: Minimal
+# ai.shll.in
+
+Source for **[ai.shll.in](https://ai.shll.in)** — the landing page for the [@sahil87](https://github.com/sahil87) AI coding toolkit (`idea`, `hop`, `fab-kit`, `wt`, `run-kit`, `tu`, `shll`).
+
+Built with [Astro](https://astro.build) + [Starlight](https://starlight.astro.build) + Tailwind v4. Deploys to GitHub Pages via `.github/workflows/` on every push to `main`.
+
+## Develop
 
 ```sh
-pnpm create astro@latest -- --template minimal
+pnpm install
+pnpm dev        # http://localhost:4321
+pnpm build      # static output → ./dist/
+pnpm preview    # preview the build locally
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Node ≥ 22.12 and pnpm 10. The `dist/` directory is gitignored — never commit it; CI is the single source of truth for what's live.
 
-## 🚀 Project Structure
+## Layout
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```
+src/
+├── content/docs/         # MDX pages (Starlight content collection)
+│   ├── index.mdx         # home (splash template)
+│   └── tools/            # one page per tool
+├── components/           # Astro components (Mermaid, etc.)
+└── styles/global.css     # Tailwind entry — kept to one @import line
+public/                   # static assets (CNAME, favicons)
+astro.config.mjs          # Starlight sidebar, integrations
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Conventions
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+The project follows a written [constitution](./fab/project/constitution.md) — most notably:
 
-Any static assets, like images, can be placed in the `public/` directory.
+- **Static-first, zero runtime** — no SSR, no client data fetching for primary content
+- **Content as source of truth** — page text lives in `src/content/docs/`, not hardcoded in templates
+- **Tailwind utilities only** — no custom CSS architecture
+- **Dark-mode parity** — every UI element renders in both themes
 
-## 🧞 Commands
+New contributions should read the constitution before adding dependencies or new patterns.
 
-All commands are run from the root of the project, from a terminal:
+## License
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+See [LICENSE](./LICENSE) (if present) or the repo root.

@@ -17,46 +17,17 @@ hero:
 ---
 
 import { Card, CardGrid } from '@astrojs/starlight/components';
-import Mermaid from '../../components/Mermaid.astro';
+import Diagram from '../../components/Diagram.astro';
 
 ## The loop
 
-One idea fans out into many parallel agent sessions — then converges into a single dashboard you can watch from your phone.
+One idea fans out into many parallel agent sessions — then converges into a single dashboard you can watch from your phone. `hop` and `tu` wrap the loop: navigation in, token tracking out.
 
-<Mermaid code={`flowchart TB
-    idea["idea"] --> fab["fab-kit"]
-    fab --> w1["wt + agent #1"]
-    fab --> w2["wt + agent #2"]
-    fab --> w3["wt + agent #3"]
-    w1 --> rk["run-kit"]
-    w2 --> rk
-    w3 --> rk
-    rk --> ship(["ship"])
+<Diagram light="/diagrams/loop-light.svg" dark="/diagrams/loop-dark.svg" alt="The toolkit loop: idea, fab-kit, wt, run-kit, hop, tu" />
 
-    classDef tool stroke:#3b82f6,stroke-width:2px;
-    classDef agent stroke:#10b981,stroke-width:2px;
-    classDef ship stroke:#f97316,stroke-width:2px;
-    class idea,fab,rk tool;
-    class w1,w2,w3 agent;
-    class ship ship;`} />
+**Inside the loop:** `idea` captures it · `fab-kit` turns it into a spec the AI can't fudge · `wt` spins up an isolated worktree per change so N agents work in parallel without conflicts · `run-kit` gives you one browser tab to watch them all (mobile-friendly via Tailscale).
 
-**The loop:** `idea` captures it · `fab-kit` turns it into a spec the AI can't fudge · `wt` spins up an isolated worktree per change so N agents work in parallel without conflicts · `run-kit` gives you one browser tab to watch them all (mobile-friendly via Tailscale).
-
-<details>
-<summary>The full picture — how `hop` and `tu` wrap the loop</summary>
-
-<Mermaid code={`flowchart TB
-    hop["hop"] -.->|navigate| loop[["the loop above"]]
-    loop -.->|tokens| tu["tu"]
-
-    classDef ambient stroke:#a855f7,stroke-width:2px;
-    classDef loopnode stroke:#3b82f6,stroke-width:2px;
-    class hop,tu ambient;
-    class loop loopnode;`} />
-
-**Wrapping it:** `hop` jumps you into any worktree (or across repos) in one keystroke · `tu` tracks what all those parallel agents are costing you in tokens · `shll` keeps everything installed and updated.
-
-</details>
+**Wrapping the loop:** `hop` jumps you into any worktree (or across repos) in one keystroke · `tu` tracks what all those parallel agents are costing you in tokens · `shll` keeps everything installed and updated.
 
 ## Install [#install]
 
