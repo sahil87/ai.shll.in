@@ -1,15 +1,7 @@
-import { defineCollection, z } from 'astro:content';
-import { glob } from 'astro/loaders';
+import { defineCollection } from 'astro:content';
+import { docsLoader } from '@astrojs/starlight/loaders';
+import { docsSchema } from '@astrojs/starlight/schema';
 
-const tools = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/tools' }),
-  schema: z.object({
-    name: z.string(),
-    oneLiner: z.string(),
-    githubUrl: z.string().url(),
-    brewFormula: z.string(),
-    order: z.number(),
-  }),
-});
-
-export const collections = { tools };
+export const collections = {
+  docs: defineCollection({ loader: docsLoader(), schema: docsSchema() }),
+};
