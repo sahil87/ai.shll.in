@@ -1,0 +1,16 @@
+{"action":"enter","driver":"fab-new","event":"stage-transition","stage":"intake","ts":"2026-05-17T06:29:29Z"}
+{"args":"Restyle ai.shll.in with terminal-inspired identity: JetBrains Mono everywhere, amber/sage/teal palette, subtle terminal flourishes ($ prompts, blinking cursor, ASCII rules, ## hash headings, tree-branch tool list). Keep Starlight chrome. Per Constitution III: tokens in @theme only, flourishes via Tailwind utilities in markup.","cmd":"fab-new","event":"command","ts":"2026-05-17T06:29:29Z"}
+{"delta":"+1.5","event":"confidence","score":1.5,"trigger":"calc-score","ts":"2026-05-17T06:31:33Z"}
+{"delta":"+0.0","event":"confidence","score":1.5,"trigger":"calc-score","ts":"2026-05-17T06:31:49Z"}
+{"cmd":"fab-continue","event":"command","ts":"2026-05-17T06:33:11Z"}
+{"action":"enter","driver":"fab-continue","event":"stage-transition","stage":"spec","ts":"2026-05-17T06:33:16Z"}
+{"delta":"+2.0","event":"confidence","score":3.5,"trigger":"calc-score","ts":"2026-05-17T06:36:16Z"}
+{"delta":"+0.0","event":"confidence","score":3.5,"trigger":"calc-score","ts":"2026-05-17T06:36:20Z"}
+{"action":"enter","driver":"fab-fff","event":"stage-transition","stage":"apply","ts":"2026-05-17T06:37:18Z"}
+{"action":"enter","driver":"fab-fff","event":"stage-transition","stage":"review","ts":"2026-05-17T06:46:37Z"}
+{"event":"review","result":"failed","ts":"2026-05-17T06:53:54Z"}
+{"action":"re-entry","driver":"fab-fff","event":"stage-transition","stage":"apply","ts":"2026-05-17T06:53:54Z"}
+{"action":"enter","driver":"fab-fff","event":"stage-transition","stage":"review","ts":"2026-05-17T06:59:05Z"}
+{"action":"enter","driver":"fab-fff","event":"stage-transition","stage":"hydrate","ts":"2026-05-17T07:04:22Z"}
+{"event":"review","result":"passed","ts":"2026-05-17T07:04:22Z"}
+{"action":"enter","driver":"fab-fff","event":"stage-transition","stage":"ship","ts":"2026-05-17T07:08:40Z"}

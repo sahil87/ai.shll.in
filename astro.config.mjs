@@ -51,6 +51,9 @@ export default defineConfig({
         },
       ],
       customCss: ['./src/styles/global.css'],
+      components: {
+        Hero: './src/components/Hero.astro',
+      },
     }),
   ],
 });

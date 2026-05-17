@@ -4,22 +4,23 @@ description: Small Go CLIs that compose into one loop — spec → parallel agen
 template: splash
 hero:
   tagline: |
-    Open-source AI coding toolkit by <a href="https://github.com/sahil87">@sahil87</a>, CTO of <a href="https://noon.design">Noon</a>. Used daily at Noon. No SDK, no vendor lock-in, no opinions you can't override.
+    Open-source AI coding toolkit by <a class="text-accent-3 underline underline-offset-2" href="https://github.com/sahil87">@sahil87</a>, CTO of <a class="text-accent-3 underline underline-offset-2" href="https://noon.design">Noon</a>. Used daily at Noon. No SDK, no vendor lock-in, no opinions you can't override.
   actions:
-    - text: Install everything
+    - text: Install everything →
       link: '#install'
-      icon: right-arrow
       variant: primary
-    - text: Browse the tools
+    - text: Browse the tools ↗
       link: /tools/
-      icon: external
       variant: secondary
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
 import Diagram from '../../components/Diagram.astro';
+import HRule from '../../components/HRule.astro';
+import ToolRow from '../../components/ToolRow.astro';
 
-## The loop
+<HRule />
+
+<h2 id="the-loop" class="before:content-['##_'] before:text-accent-2 before:mr-1">The loop</h2>
 
 One idea fans out into many parallel agent sessions — then converges into a single dashboard you can watch from your phone. `hop` and `tu` wrap the loop: navigation in, token tracking out.
 
@@ -29,49 +30,39 @@ One idea fans out into many parallel agent sessions — then converges into a si
 
 **Wrapping the loop:** `hop` jumps you into any worktree (or across repos) in one keystroke · `tu` tracks what all those parallel agents are costing you in tokens · `shll` keeps everything installed and updated.
 
-## Install
+<HRule />
+
+<h2 id="install" class="before:content-['##_'] before:text-accent-2 before:mr-1">Install</h2>
+
+<div class="relative">
+  <span class="absolute top-2 right-3 text-xs uppercase tracking-wider text-fg-faint select-none pointer-events-none z-10">bash</span>
 
 ```bash
-brew install sahil87/tap/all   # installs every tool in the toolkit
-shll shell-install             # one command to wire shell integration into your rc file
-exec $SHELL                    # reload so the integration takes effect
+$ brew install sahil87/tap/all   # installs every tool in the toolkit
+$ shll shell-install             # one command to wire shell integration into your rc file
+$ exec $SHELL                    # reload so the integration takes effect
 ```
+
+</div>
 
 Later, `shll update` upgrades every installed tool in one go. See the [shll README](https://github.com/sahil87/shll) for the full command surface.
 
-## Tools
+<HRule />
 
-<CardGrid>
-  <Card title="idea" icon="pencil">
-    Plain-Markdown backlog (`fab/backlog.md`) — worktree-aware, queryable from the CLI, feeds `/fab-new`.<br/>
-    [Docs →](/tools/idea/) · [GitHub →](https://github.com/sahil87/idea)
-  </Card>
-  <Card title="hop" icon="rocket">
-    Fuzzy-nav, batch-git, and run-anything-inside-any-repo from one `hop.yaml` config.<br/>
-    [Docs →](/tools/hop/) · [GitHub →](https://github.com/sahil87/hop)
-  </Card>
-  <Card title="fab-kit" icon="setting">
-    7-stage pipeline that forces AI agents to plan before they code.<br/>
-    [Docs →](/tools/fab-kit/) · [GitHub →](https://github.com/sahil87/fab-kit)
-  </Card>
-  <Card title="wt" icon="seti:folder">
-    Opinionated `git worktree` wrapper — one worktree per change, zero conflicts.<br/>
-    [Docs →](/tools/wt/) · [GitHub →](https://github.com/sahil87/wt)
-  </Card>
-  <Card title="run-kit" icon="laptop">
-    Browser dashboard for tmux + Claude Code workspaces. Mobile-friendly via Tailscale.<br/>
-    [Docs →](/tools/run-kit/) · [GitHub →](https://github.com/sahil87/run-kit)
-  </Card>
-  <Card title="tu" icon="analytics">
-    Token/cost tracker for Claude Code, Codex, OpenCode. Multi-machine sync, live watch.<br/>
-    [Docs →](/tools/tu/) · [GitHub →](https://github.com/sahil87/tu)
-  </Card>
-  <Card title="shll" icon="puzzle">
-    Meta-CLI — `shll install / update / shell-install` to wire and maintain the whole toolkit.<br/>
-    [Docs →](/tools/shll/) · [GitHub →](https://github.com/sahil87/shll)
-  </Card>
-</CardGrid>
+<h2 id="tools" class="before:content-['##_'] before:text-accent-2 before:mr-1">Tools</h2>
 
-## Community
+<div class="not-content font-mono text-sm my-4">
+  <ToolRow name="idea">Plain-Markdown backlog (<code class="text-fg">fab/backlog.md</code>) — worktree-aware, queryable from the CLI, feeds <code class="text-fg">/fab-new</code>.</ToolRow>
+  <ToolRow name="hop">Fuzzy-nav, batch-git, and run-anything-inside-any-repo from one <code class="text-fg">hop.yaml</code> config.</ToolRow>
+  <ToolRow name="fab-kit">7-stage pipeline that forces AI agents to plan before they code.</ToolRow>
+  <ToolRow name="wt">Opinionated <code class="text-fg">git worktree</code> wrapper — one worktree per change, zero conflicts.</ToolRow>
+  <ToolRow name="run-kit">Browser dashboard for tmux + Claude Code workspaces. Mobile-friendly via Tailscale.</ToolRow>
+  <ToolRow name="tu">Token/cost tracker for Claude Code, Codex, OpenCode. Multi-machine sync, live watch.</ToolRow>
+  <ToolRow name="shll" branch="└──">Meta-CLI — <code class="text-fg">shll install / update / shell-install</code> to wire and maintain the whole toolkit.</ToolRow>
+</div>
+
+<HRule />
+
+<h2 id="community" class="before:content-['##_'] before:text-accent-2 before:mr-1">Community</h2>
 
 Questions, feature requests, or just want to chat about AI dev tooling? **[Join the Discord](https://discord.gg/32XHh5mJYn)** — that's where I answer queries, share what I'm building, and discuss with people using these tools.
