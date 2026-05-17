@@ -47,11 +47,19 @@
   --sl-color-bg-nav: var(--c-bg);
   --sl-color-text: var(--c-fg);
   --sl-color-text-accent: var(--c-accent);
+  --sl-color-text-invert: var(--c-bg);
   --sl-color-accent: var(--c-accent);
-  --sl-color-accent-low: var(--c-accent-2);
+  --sl-color-accent-low: var(--c-surface-2);
   --sl-color-accent-high: var(--c-accent);
   --sl-color-hairline: var(--c-border);
   --sl-color-hairline-light: var(--c-border);
+  --sl-color-hairline-shade: var(--c-fg-faint);
+
+  /* Heading scale — terminal-skin: H1 dominates (set via Hero.astro on home),
+     section H2 reads as a section anchor (~24px), not a competing hero. */
+  --sl-text-h1: 2.25rem;   /* 36px — used on tool subpages */
+  --sl-text-h2: 1.5rem;    /* 24px */
+  --sl-text-h3: 1.125rem;  /* 18px */
 }
 
 /* Dark theme (primary) — Starlight sets data-theme="dark" on <html>. */
@@ -73,9 +81,11 @@
   --sl-color-bg-nav: var(--c-bg);
   --sl-color-text: var(--c-fg);
   --sl-color-text-accent: var(--c-accent);
+  --sl-color-text-invert: var(--c-bg);
   --sl-color-accent: var(--c-accent);
-  --sl-color-accent-low: var(--c-accent-2);
+  --sl-color-accent-low: var(--c-surface-2);
   --sl-color-accent-high: var(--c-accent);
   --sl-color-hairline: var(--c-border);
   --sl-color-hairline-light: var(--c-border);
+  --sl-color-hairline-shade: var(--c-fg-faint);
 }
