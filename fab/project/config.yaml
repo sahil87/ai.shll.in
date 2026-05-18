@@ -2,16 +2,17 @@ fab_version: 1.9.5
 
 project:
   name: "ai.shll.in"
-  description: "Landing page for the shll AI coding toolkit (Astro + Tailwind + MDX)"
+  description: "Landing page for the shll AI coding toolkit — multi-site repo (live build under sites/, experiments in sites/_playground/)"
 
-# Directories containing implementation code (relative to repo root).
+# Directories containing implementation code for the LIVE site only. Experiments
+# under sites/_playground/ are intentionally excluded from fab's source scope.
 source_paths:
-  - src/
+  - sites/astro-tailwind-terminal1/src/
 
 # Pathspec exclusions used by /git-pr to compute the "true impact" line counts
 # in the PR body (lines added/deleted excluding noise directories like fab/ and
 # docs/). Optional — when absent or empty, the impact block is omitted.
-true_impact_exclude: [fab/, docs/]
+true_impact_exclude: [fab/, docs/, sites/_playground/]
 
 # The review stage validates code against the plan.md ## Acceptance section.
 # Built-in categories: functional_completeness, behavioral_correctness,

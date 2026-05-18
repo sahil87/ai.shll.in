@@ -2,42 +2,49 @@
 
 Source for **[ai.shll.in](https://ai.shll.in)** — the landing page for the [@sahil87](https://github.com/sahil87) AI coding toolkit (`idea`, `hop`, `fab-kit`, `wt`, `run-kit`, `tu`, `shll`).
 
-Built with [Astro](https://astro.build) + [Starlight](https://starlight.astro.build) + Tailwind v4. Deploys to GitHub Pages via `.github/workflows/` on every push to `main`.
+## Layout
 
-## Develop
+This repo hosts multiple website variants under `sites/`. One is the live build; the others are experiments.
+
+```
+sites/
+├── astro-tailwind-terminal1/   # currently live at ai.shll.in
+└── _playground/                # scratch space for new experiments
+```
+
+Each site is a self-contained project with its own `package.json` and dependencies. The live build is chosen by `.github/workflows/deploy.yml` (`SITE_DIR` env var) — swap it by editing that one line.
+
+## Run the live site locally
 
 ```sh
+cd sites/astro-tailwind-terminal1
 pnpm install
 pnpm dev        # http://localhost:4321
 pnpm build      # static output → ./dist/
-pnpm preview    # preview the build locally
 ```
 
-Node ≥ 22.12 and pnpm 10. The `dist/` directory is gitignored — never commit it; CI is the single source of truth for what's live.
+See [`sites/astro-tailwind-terminal1/README.md`](./sites/astro-tailwind-terminal1/README.md) for site-specific details.
 
-## Layout
+## Start a new experiment
 
+```sh
+mkdir sites/_playground/<your-experiment-name>
+cd sites/_playground/<your-experiment-name>
+# scaffold whatever framework you want
 ```
-src/
-├── content/docs/         # MDX pages (Starlight content collection)
-│   ├── index.mdx         # home (splash template)
-│   └── tools/            # one page per tool
-├── components/           # Astro components (Mermaid, etc.)
-└── styles/global.css     # Tailwind entry — kept to one @import line
-public/                   # static assets (CNAME, favicons)
-astro.config.mjs          # Starlight sidebar, integrations
-```
+
+Experiments aren't deployed. Promote one by moving it from `_playground/` to a peer `sites/<name>/` directory and updating `SITE_DIR` in the deploy workflow.
 
 ## Conventions
 
 The project follows a written [constitution](./fab/project/constitution.md) — most notably:
 
 - **Static-first, zero runtime** — no SSR, no client data fetching for primary content
-- **Content as source of truth** — page text lives in `src/content/docs/`, not hardcoded in templates
-- **Tailwind utilities only** — no custom CSS architecture
-- **Dark-mode parity** — every UI element renders in both themes
+- **Deploy via CI, never manually** — `dist/` is never committed
+- **Dark-mode parity** — every UI element renders correctly in both themes
+- **Multi-site isolation** — each site under `sites/` owns its own stack; cross-site sharing is opt-in
 
-New contributions should read the constitution before adding dependencies or new patterns.
+Stack choices, styling, and content shape are now per-site decisions, not project-wide rules. See each site's README.
 
 ## License
 
