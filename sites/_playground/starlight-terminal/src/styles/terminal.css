@@ -1,0 +1,172 @@
+/* terminal.css — port of astro-tailwind-terminal1's aesthetic to Starlight.
+   Strategy: override Starlight's CSS custom properties + add a few selectors
+   for the signature elements (## h2 prefix, ASCII rule). */
+
+@import '@fontsource/jetbrains-mono/400.css';
+@import '@fontsource/jetbrains-mono/500.css';
+@import '@fontsource/jetbrains-mono/600.css';
+@import '@fontsource/jetbrains-mono/700.css';
+
+/* ── Palette ─────────────────────────────────────────────────────────────
+   Mirrors terminal1's two themes. Starlight ships a dark-by-default scheme
+   and a light variant under [data-theme='light']. We invert: our dark is
+   primary, light is the paper-terminal variant. */
+
+:root {
+  /* Dark (primary) */
+  --c-bg: #0b0d10;
+  --c-surface: #12161b;
+  --c-surface-2: #1a1f26;
+  --c-border: #232932;
+  --c-fg: #d8dce4;
+  --c-fg-dim: #7c8593;
+  --c-fg-faint: #4a525e;
+  --c-accent: #d4a73a;
+  --c-accent-2: #7cb342;
+  --c-accent-3: #5eb3b3;
+
+  /* Starlight semantic tokens → terminal palette */
+  --sl-color-white: var(--c-fg);
+  --sl-color-gray-1: var(--c-fg);
+  --sl-color-gray-2: #c5c9d2;
+  --sl-color-gray-3: var(--c-fg-dim);
+  --sl-color-gray-4: #5a6371;
+  --sl-color-gray-5: var(--c-fg-faint);
+  --sl-color-gray-6: var(--c-border);
+  --sl-color-gray-7: var(--c-surface-2);
+  --sl-color-black: var(--c-bg);
+
+  --sl-color-accent-low: #2a2410;
+  --sl-color-accent: var(--c-accent);
+  --sl-color-accent-high: #f0c75a;
+
+  --sl-color-text: var(--c-fg);
+  --sl-color-text-accent: var(--c-accent);
+  --sl-color-text-invert: var(--c-bg);
+  --sl-color-bg: var(--c-bg);
+  --sl-color-bg-nav: var(--c-surface);
+  --sl-color-bg-sidebar: var(--c-surface);
+  --sl-color-bg-inline-code: var(--c-surface-2);
+  --sl-color-bg-accent: var(--c-accent);
+  --sl-color-hairline-light: var(--c-border);
+  --sl-color-hairline: var(--c-border);
+  --sl-color-hairline-shade: var(--c-border);
+
+  /* Typography — mono everywhere */
+  --sl-font: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --sl-font-mono: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --sl-text-base: 14px;
+  --sl-line-height: 1.65;
+}
+
+:root[data-theme='light'] {
+  /* Light (paper terminal) */
+  --c-bg: #f5f1e8;
+  --c-surface: #ede7d6;
+  --c-surface-2: #e4dcc4;
+  --c-border: #c9bfa5;
+  --c-fg: #2a2620;
+  --c-fg-dim: #6b6256;
+  --c-fg-faint: #a39a87;
+  --c-accent: #a8761a;
+  --c-accent-2: #5a7a2e;
+  --c-accent-3: #2e6868;
+
+  --sl-color-white: var(--c-fg);
+  --sl-color-gray-1: var(--c-fg);
+  --sl-color-gray-2: #463f37;
+  --sl-color-gray-3: var(--c-fg-dim);
+  --sl-color-gray-4: #847a6c;
+  --sl-color-gray-5: var(--c-fg-faint);
+  --sl-color-gray-6: var(--c-border);
+  --sl-color-gray-7: var(--c-surface-2);
+  --sl-color-black: var(--c-bg);
+
+  --sl-color-accent-low: #f0e4c8;
+  --sl-color-accent: var(--c-accent);
+  --sl-color-accent-high: #8a5d12;
+
+  --sl-color-text: var(--c-fg);
+  --sl-color-text-accent: var(--c-accent);
+  --sl-color-text-invert: var(--c-bg);
+  --sl-color-bg: var(--c-bg);
+  --sl-color-bg-nav: var(--c-surface);
+  --sl-color-bg-sidebar: var(--c-surface);
+  --sl-color-bg-inline-code: var(--c-surface-2);
+  --sl-color-bg-accent: var(--c-accent);
+  --sl-color-hairline-light: var(--c-border);
+  --sl-color-hairline: var(--c-border);
+  --sl-color-hairline-shade: var(--c-border);
+}
+
+/* ── Signature elements from terminal1 ──────────────────────────────────── */
+
+/* '## ' sage prefix on every H2 in main content. */
+.sl-markdown-content h2:not(:where(.not-content *))::before {
+  content: '## ';
+  color: var(--c-accent-2);
+  font-weight: 500;
+}
+
+/* '### ' prefix on h3 — extend the shell-comment system one level deeper.
+   At doc scale, h3 is common enough to deserve the signal. */
+.sl-markdown-content h3:not(:where(.not-content *))::before {
+  content: '### ';
+  color: var(--c-accent-2);
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+/* Sidebar group labels — '# ' faint prefix, matching .shell-group-label. */
+.sidebar-content summary .group-label .large,
+.sidebar-content > ul > li > details > summary .group-label .large,
+nav.sidebar ul.top-level > li > details > summary > .group-label > .large {
+  position: relative;
+}
+nav.sidebar ul.top-level > li > details > summary > .group-label > .large::before {
+  content: '# ';
+  color: var(--c-fg-faint);
+  font-weight: 400;
+}
+
+/* ASCII rule — apply to <hr> inside markdown content. */
+.sl-markdown-content hr:not(:where(.not-content *)) {
+  border: 0;
+  color: var(--c-fg-faint);
+  overflow: hidden;
+  white-space: nowrap;
+  user-select: none;
+  margin: 1.5rem 0;
+  height: 1rem;
+  line-height: 1rem;
+}
+.sl-markdown-content hr:not(:where(.not-content *))::before {
+  content: '────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────';
+}
+
+/* Code blocks — tighten to the terminal feel. */
+.sl-markdown-content :not(pre) > code {
+  color: var(--c-accent);
+  background: var(--c-surface-2);
+  padding: 0.05em 0.35em;
+  border-radius: 2px;
+}
+
+/* Header — flatten the chrome a touch. */
+header.header {
+  border-bottom: 1px solid var(--c-border);
+  background: var(--c-bg);
+}
+
+/* Sidebar — remove the slightly raised feel. */
+nav.sidebar {
+  background: var(--c-bg);
+}
+
+/* Splash hero — gives the home page a terminal-prompt vibe. */
+.hero h1 {
+  font-weight: 600;
+}
+.hero .tagline {
+  color: var(--c-fg-dim);
+}
