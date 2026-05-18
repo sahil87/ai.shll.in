@@ -5,6 +5,7 @@
 
 | Domain | Description | Memory Files |
 |--------|-------------|------|
-| [site](./site/index.md) | Pure Astro + Tailwind architecture, styling, config | site-architecture, styling, astro-config, diagrams |
 | [build-deploy](./build-deploy/index.md) | How the site is built and deployed | deployment |
 | [conventions](./conventions/index.md) | Recurring shapes that span multiple files | tool-page-rubric |
+
+> Site-implementation memory lives alongside each site under `sites/<name>/docs/memory/` — not indexed here. Top-level memory covers project-level concerns (deploy strategy, cross-site conventions).
