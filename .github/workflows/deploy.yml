@@ -17,7 +17,7 @@ concurrency:
 # Path to the site that ships to ai.shll.in. Change this single value to swap
 # which site under sites/ is built and deployed.
 env:
-  SITE_DIR: sites/astro-tailwind-terminal1
+  SITE_DIR: sites/astro-starlight-terminal1
 
 jobs:
   build:
