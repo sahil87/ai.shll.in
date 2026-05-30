@@ -18,6 +18,33 @@ export default defineConfig({
       title: 'shll',
       description: 'The shll AI coding toolkit — 7 CLIs that play well together.',
       customCss: ['./src/styles/terminal.css'],
+      expressiveCode: {
+        // Match Starlight's theme toggle: dark = terminal-dark, light = paper.
+        themes: ['github-dark', 'github-light'],
+        styleOverrides: {
+          // Borrow the terminal1 palette so code panels feel like part of the
+          // page chrome, not a transplanted IDE.
+          borderRadius: '4px',
+          borderColor: 'var(--c-border)',
+          codeFontFamily: 'var(--sl-font-mono)',
+          codeFontSize: '0.9rem',
+          codeLineHeight: '1.55',
+          codeBackground: 'var(--c-surface-2)',
+          frames: {
+            frameBoxShadowCssValue: 'none',
+            editorActiveTabBackground: 'var(--c-surface)',
+            editorActiveTabForeground: 'var(--c-fg)',
+            editorTabBarBackground: 'var(--c-surface)',
+            editorTabBarBorderBottomColor: 'var(--c-border)',
+            terminalBackground: 'var(--c-surface-2)',
+            terminalTitlebarBackground: 'var(--c-surface)',
+            terminalTitlebarForeground: 'var(--c-fg-dim)',
+            terminalTitlebarBorderBottomColor: 'var(--c-border)',
+            // Hide the Mac-style traffic light dots; tighter terminal feel.
+            terminalTitlebarDotsOpacity: '0',
+          },
+        },
+      },
       logo: { src: './src/assets/prompt.svg', replacesTitle: false },
       social: [
         { icon: 'github', label: 'GitHub', href: 'https://github.com/sahil87' },
