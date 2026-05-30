@@ -56,7 +56,19 @@
   --sl-font: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
   --sl-font-mono: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
   --sl-text-base: 14px;
-  --sl-line-height: 1.65;
+  /* Tighter than Starlight's default 1.75 — terminals don't breathe like
+     long-form articles. Still loose enough for sub-headings to read. */
+  --sl-line-height: 1.5;
+  --sl-line-height-headings: 1.25;
+
+  /* Density: collapse the inter-block gap (was 1rem) so paragraphs/lists
+     sit closer, like a man page or terminal output. Heading sizes shrunk
+     a tier — Starlight's 4xl/5xl H1 looks magazine-y, not terminal. */
+  --sl-content-gap-y: 0.625rem;
+  --sl-text-h1: var(--sl-text-3xl);
+  --sl-text-h2: var(--sl-text-2xl);
+  --sl-text-h3: var(--sl-text-xl);
+  --sl-text-h4: var(--sl-text-lg);
 }
 
 :root[data-theme='light'] {
@@ -117,16 +129,80 @@
   opacity: 0.8;
 }
 
-/* Sidebar group labels — '# ' faint prefix, matching .shell-group-label. */
-.sidebar-content summary .group-label .large,
-.sidebar-content > ul > li > details > summary .group-label .large,
-nav.sidebar ul.top-level > li > details > summary > .group-label > .large {
-  position: relative;
+/* ── Sidebar as a shell-style listing ───────────────────────────────────────
+   Group labels render as shell comments (# Group name), nested groups too.
+   Leaf items use a space-padded indent so they read like file-listings;
+   the active item is marked with '> '. No background pills, no rounded
+   hover panels — terminals don't have those. */
+
+/* Top-level group labels (Getting started / Tools / Workflows): faint '# ' */
+nav.sidebar ul.top-level > li > details > summary .group-label .large {
+  color: var(--c-fg-dim);
+  font-weight: 500;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
 }
-nav.sidebar ul.top-level > li > details > summary > .group-label > .large::before {
+nav.sidebar ul.top-level > li > details > summary .group-label .large::before {
   content: '# ';
   color: var(--c-fg-faint);
   font-weight: 400;
+}
+
+/* Nested group labels (per-tool groups under "Tools"): same shape, slightly
+   less faint — they are navigable contexts. */
+nav.sidebar ul.top-level li li > details > summary .group-label .large {
+  color: var(--c-accent);
+  font-weight: 500;
+}
+nav.sidebar ul.top-level li li > details > summary .group-label .large::before {
+  content: '# ';
+  color: var(--c-fg-faint);
+}
+
+/* Caret arrows → replace with '+ ' / '-' so the disclosure feels like
+   collapsed/expanded shell tree output. Hide the SVG. */
+nav.sidebar summary .caret {
+  display: none;
+}
+nav.sidebar summary {
+  position: relative;
+  padding-inline-start: 1rem;
+}
+nav.sidebar summary::before {
+  content: '+';
+  position: absolute;
+  inset-inline-start: 0;
+  color: var(--c-fg-faint);
+  font-weight: 600;
+}
+nav.sidebar details[open] > summary::before {
+  content: '-';
+}
+
+/* Leaf links: no background, no rounded pill. Two-space indent so they
+   feel like ls output beneath a directory. */
+nav.sidebar a {
+  background: transparent !important;
+  border-radius: 0 !important;
+  padding-inline: 0.25rem !important;
+  color: var(--c-fg-dim);
+  position: relative;
+}
+nav.sidebar a:hover {
+  background: var(--c-surface-2) !important;
+  color: var(--c-fg);
+}
+
+/* Active item: '> ' marker in accent. Strip Starlight's background highlight. */
+nav.sidebar a[aria-current='page'] {
+  color: var(--c-accent);
+  font-weight: 600;
+  background: transparent !important;
+}
+nav.sidebar a[aria-current='page']::before {
+  content: '> ';
+  color: var(--c-accent);
+  font-weight: 600;
 }
 
 /* ASCII rule — apply to <hr> inside markdown content. */
@@ -152,15 +228,103 @@ nav.sidebar ul.top-level > li > details > summary > .group-label > .large::befor
   border-radius: 2px;
 }
 
-/* Header — flatten the chrome a touch. */
+/* Header — flatten to a thin status line. The site title gets a faint
+   bracket-tag (e.g. [shll]) so it reads like a tmux prefix indicator. */
 header.header {
   border-bottom: 1px solid var(--c-border);
   background: var(--c-bg);
+  box-shadow: none;
+}
+header .site-title span {
+  color: var(--c-fg);
+  font-weight: 600;
+}
+header .site-title span::before {
+  content: '[';
+  color: var(--c-fg-faint);
+  font-weight: 400;
+  margin-inline-end: 0.05em;
+}
+header .site-title span::after {
+  content: ']';
+  color: var(--c-fg-faint);
+  font-weight: 400;
+  margin-inline-start: 0.05em;
 }
 
 /* Sidebar — remove the slightly raised feel. */
 nav.sidebar {
   background: var(--c-bg);
+  border-inline-end: 1px solid var(--c-border);
+}
+
+/* Sidebar pane — drop the faint background highlight Starlight applies. */
+.sidebar-pane {
+  background: var(--c-bg);
+}
+
+/* Right-hand TOC ("On this page") — render heading as a shell comment. */
+starlight-toc nav > h2 {
+  color: var(--c-fg-dim);
+  font-weight: 500;
+  font-size: 0.85rem;
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+starlight-toc nav > h2::before {
+  content: '# ';
+  color: var(--c-fg-faint);
+  font-weight: 400;
+}
+
+/* TOC links: flatten, active marker '> ' like the sidebar. */
+starlight-toc a {
+  color: var(--c-fg-dim);
+  border: none;
+}
+starlight-toc a[aria-current='true'] {
+  color: var(--c-accent);
+  font-weight: 600;
+  background: transparent;
+}
+starlight-toc a[aria-current='true']::before {
+  content: '> ';
+  color: var(--c-accent);
+}
+
+/* ── Density pass ───────────────────────────────────────────────────────────
+   Doc pages shouldn't breathe like a long-form article. These overrides
+   tighten Starlight's defaults to feel more like a man page or terminal
+   transcript — denser, less air around each block. */
+
+/* Heading-after-paragraph spacing: shrink the 1.5em default. Headings still
+   stand out via the '## ' prefix; we don't need extra vertical separation. */
+.sl-markdown-content :not(h1, h2, h3, h4, h5, h6)
+  + :is(h1, h2, h3, h4, h5, h6):not(:where(.not-content *)) {
+  margin-top: 1em;
+}
+
+/* List spacing: keep items tighter than the default 0.25rem feels lush. */
+.sl-markdown-content li + li:not(:where(.not-content *)) {
+  margin-top: 0.125rem;
+}
+
+/* Code-block padding: Starlight defaults to 0.75rem 1rem. Bash blocks
+   inside terminal frames already have their own padding via the EC frame,
+   so tighten the *outer* padding too. */
+.sl-markdown-content pre:not(:where(.not-content *)) {
+  padding: 0.5rem 0.75rem;
+}
+
+/* Table density — Starlight rows are spacious by default. */
+.sl-markdown-content :is(th, td):not(:where(.not-content *)) {
+  padding: 0.35rem 0.75rem;
+}
+
+/* Content panel vertical padding — Starlight's ContentPanel uses 1.5rem;
+   tighten so doc pages start higher and waste less screen on chrome. */
+.content-panel {
+  padding-block: 1rem;
 }
 
 /* Splash hero — gives the home page a terminal-prompt vibe. */
